@@ -1,0 +1,159 @@
+# Node.js Architecture
+
+Node.js is a JavaScript runtime environment that allows JavaScript to run outside the browser. It is designed to build fast, scalable, and efficient server-side applications using a non-blocking, event-driven architecture.
+
+## Key Components of Node.js Architecture
+
+### JavaScript Engine (V8)
+
+* V8 is Google’s open-source JavaScript engine written in C++.
+* It compiles JavaScript directly into machine code instead of interpreting it line by line.
+* This makes execution very fast and efficient.
+* Node.js uses V8 to execute JavaScript code on the server.
+
+### Node.js Core APIs
+
+* Core APIs are built-in modules provided by Node.js.
+* Examples: `fs`, `http`, `path`, `os`, `crypto`, `events`.
+* These APIs allow interaction with the file system, network, operating system, etc.
+* They are written partly in JavaScript and partly in C/C++ for performance.
+
+### Native Bindings
+
+* Native bindings act as a bridge between JavaScript code and C/C++ code.
+* They connect Node.js Core APIs with low-level system functionality.
+* Help Node.js access OS-level features like file I/O and networking.
+
+### Event Loop
+
+* The event loop is the heart of Node.js’s non-blocking behavior.
+* It continuously checks for pending tasks and executes callbacks when operations are completed.
+* Allows Node.js to handle thousands of concurrent requests using a single main thread.
+
+### libuv
+
+* libuv is a C library used by Node.js.
+* It provides asynchronous I/O operations and manages the event loop.
+* Handles tasks like file system access, networking, timers, and thread pool management.
+
+---
+
+# libuv
+
+## What is libuv?
+
+* libuv is a multi-platform support library written in C.
+* It abstracts operating system details and provides asynchronous, event-driven functionality.
+
+## Why Node.js Needs libuv
+
+* JavaScript alone cannot handle low-level OS operations efficiently.
+* libuv provides a consistent interface for async operations across platforms.
+* Enables non-blocking I/O and high performance.
+
+## Responsibilities of libuv
+
+* Managing the event loop
+* Handling asynchronous file system operations
+* Managing networking (TCP, UDP)
+* Handling timers and signals
+* Managing the thread pool
+
+---
+
+# Thread Pool
+
+## What is a Thread Pool?
+
+* A thread pool is a collection of worker threads used to perform background tasks.
+* Threads are reused instead of being created repeatedly.
+
+## Why Node.js Uses a Thread Pool
+
+* Some operations are CPU-intensive or blocking in nature.
+* Using the main thread for these tasks would block the event loop.
+* Thread pool allows such tasks to run in parallel without blocking the main thread.
+
+## Operations Handled by the Thread Pool
+
+* File system operations (`fs.readFile`, `fs.writeFile`)
+* Cryptography operations
+* Compression and decompression
+* DNS lookups
+
+---
+
+# Worker Threads
+
+## What Are Worker Threads?
+
+* Worker threads are separate JavaScript threads introduced in Node.js.
+* They allow running JavaScript code in parallel.
+
+## Why Are Worker Threads Needed?
+
+* Node.js is single-threaded by default.
+* CPU-intensive JavaScript tasks can block the event loop.
+* Worker threads help offload heavy computations.
+
+## Difference Between Thread Pool and Worker Threads
+
+| Aspect     | Thread Pool                  | Worker Threads              |
+| ---------- | ---------------------------- | --------------------------- |
+| Purpose    | Handles internal async tasks | Runs custom JavaScript code |
+| Managed By | libuv                        | Node.js Worker Threads API  |
+| Use Case   | File I/O, crypto             | CPU-heavy JS computations   |
+| Control    | Automatic                    | Developer-controlled        |
+
+---
+
+# Event Loop Queues
+
+The event loop processes tasks using different queues based on priority.
+
+## Macro Task Queue
+
+* Contains tasks that take more time.
+* Examples:
+
+  * `setTimeout`
+  * `setInterval`
+  * `setImmediate`
+  * I/O callbacks
+
+## Micro Task Queue
+
+* Contains high-priority tasks.
+* Examples:
+
+  * `Promise.then()`
+  * `catch()`
+  * `finally()`
+  * `process.nextTick()`
+
+## Execution Priority
+
+* Micro Task Queue is executed before Macro Task Queue.
+* All microtasks are completed before moving to the next macro task.
+
+## Example
+
+```js
+setTimeout(() => console.log("Timeout"), 0);
+
+Promise.resolve().then(() => console.log("Promise"));
+
+console.log("Start");
+```
+
+### Output Order
+
+1. Start
+2. Promise
+3. Timeout
+
+---
+
+# Conclusion
+
+Node.js achieves high performance by combining the V8 engine, libuv, event loop, and asynchronous architecture. Understanding these internals helps in writing efficient, scalable, and non-blocking applications.
