@@ -1,0 +1,170 @@
+# Understanding Project Management in NodeJS
+
+## a. Package Managers
+
+### What is a Package Manager?
+
+A **package manager** is a tool that helps developers install, update, remove, and manage external libraries (packages) required for a project. These packages contain reusable code written by other developers.
+
+Example:
+Instead of writing your own code for handling HTTP requests or database connections, you can install ready-made packages.
+
+---
+
+### Why do we need Package Managers in Backend Development?
+
+Package managers are important because:
+
+* They save development time by providing reusable libraries
+* They manage project dependencies automatically
+* They ensure consistent versions of libraries across different systems
+* They make project setup easy for other developers
+
+Example:
+If your backend uses Express.js, a package manager installs Express and its required files easily.
+
+---
+
+### Problems Faced If Package Managers Are Not Used
+
+Without package managers:
+
+* Developers must manually download and manage libraries
+* Version mismatches can break the application
+* Project setup becomes difficult and error-prone
+* Collaboration between developers becomes harder
+
+---
+
+## b. NPM (Node Package Manager)
+
+### What is NPM?
+
+**NPM (Node Package Manager)** is the default package manager for Node.js. It is used to install, manage, and share JavaScript packages.
+
+NPM comes automatically when Node.js is installed.
+
+---
+
+### Why is NPM Important for Node.js Applications?
+
+NPM is important because:
+
+* It provides access to thousands of open-source packages
+* It simplifies dependency management
+* It helps manage scripts like start, build, and test
+* It ensures the correct versions of packages are used
+
+---
+
+### How NPM Helps in Managing Dependencies
+
+NPM manages dependencies by:
+
+* Installing required packages using `npm install`
+* Listing dependencies in `package.json`
+* Locking exact versions using `package-lock.json`
+
+Example:
+
+```bash
+npm install express
+```
+
+This command installs Express and records it as a dependency.
+
+---
+
+## c. Backend Project Initialization
+
+### Command Used to Initialize a Backend (Node.js) Project
+
+```bash
+npm init
+```
+
+---
+
+### Difference Between `npm init` and `npm init -y`
+
+#### `npm init`
+
+* Asks questions like project name, version, author
+* Allows custom configuration
+
+#### `npm init -y`
+
+* Skips questions
+* Creates `package.json` with default values
+* Faster for quick project setup
+
+---
+
+## d. Files and Folders Created After Project Initialization
+
+### package.json
+
+* Main configuration file of the project
+* Contains project metadata
+* Stores dependencies and scripts
+
+Importance:
+
+* Required to install dependencies
+* Helps others understand the project
+
+---
+
+### node_modules
+
+* Contains all installed packages
+* Automatically created by NPM
+
+Importance:
+
+* Required for the project to run
+* Can be regenerated using `npm install`
+
+---
+
+### package-lock.json
+
+* Records exact versions of installed packages
+* Ensures consistency across systems
+
+Importance:
+
+* Prevents version conflicts
+* Makes builds predictable
+
+---
+
+## Files/Folders and GitHub
+
+### Files/Folders NOT to Push to GitHub
+
+* `node_modules/`
+
+Reason:
+
+* Very large in size
+* Can be recreated using `npm install`
+
+---
+
+### Files That MUST Be Committed to GitHub
+
+* `package.json`
+* `package-lock.json`
+* Source code files (`.js`, `.ts`, etc.)
+
+Reason:
+
+* Required to install dependencies
+* Helps reproduce the project setup
+
+---
+
+## Conclusion
+
+Using NPM and proper project initialization is essential for managing backend Node.js projects efficiently. Package managers simplify dependency handling, improve collaboration, and ensure consistent application behavior across different environments.
